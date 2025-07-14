@@ -1,18 +1,29 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
+//-------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//    File      : dllmain.cpp
+//    Project   : CodeArt Engine
+//    Authors   : Ali Salmanizadegan, Dr. Seyed Navid Hosseini
+//    Date      : 2025-07-13
+//    Time      : 20:22:00
+//    Copyright : (c) CODEART ENGINE Corporation. All rights reserved.
+//-----------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+
 #include "targetver.h"
 #include "stdafx.h"
 
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#define WIN32_LEAN_AND_MEAN
 #define EXP __declspec(dllexport)
 
 // Windows Header Files
 #include <typeinfo>
 #include <windows.h>
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-)
+#include "CA3DPlugin.h"
+
+CA3DPlugin Plugin;
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call)
 	{
@@ -22,6 +33,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	case DLL_PROCESS_DETACH:
 		break;
 	}
+
 	return TRUE;
 }
 
@@ -72,15 +84,33 @@ extern "C"
 
 #pragma endregion
 
+#pragma region Init
+	void AddCommands()
+	{
+		Plugin.AddCommand(COMMAND("Vehicle_Left", 2, Vehicle_Left));
+		Plugin.AddCommand(COMMAND("Vehicle_Right", 2, Vehicle_Right));
+		Plugin.AddCommand(COMMAND("Vehicle_Forward", 2, Vehicle_Forward));
+		Plugin.AddCommand(COMMAND("Vehicle_Backward", 2, Vehicle_Backward));
+	}
+
+	EXP void Plugin_Init()
+	{
+		AddCommands();
+	}
+#pragma endregion
+
 #pragma region Simulation
 
 	EXP void StepSimulation(float delta_time)
 	{
-		int level_index = 0;
-		int vehicle_index = 0;
+		static bool init = false;
 
-		Vehicle_Right(level_index, vehicle_index);
-		Vehicle_Forward(level_index, vehicle_index);
+		if (!init)
+		{
+			init = true;
+			AddCommands();
+			Plugin.Init();
+		}
 	}
 
 #pragma endregion
