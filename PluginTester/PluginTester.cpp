@@ -37,6 +37,7 @@ int main()
 		send(sock, command, strlen(command), 0);
 		std::cout << "Message sent to server\n";
 
+		buffer[0] = '\0';
 		recv(sock, buffer, sizeof(buffer), 0);
 		std::cout << "Received from server: " << buffer << std::endl;
 

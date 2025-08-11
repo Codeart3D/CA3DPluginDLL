@@ -50,17 +50,17 @@ bool CSocket::CheckConnection()
 	bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr));
 	listen(serverSocket, 1);
 
+	int clientSize = sizeof(clientAddr);
+	clientSocket = accept(serverSocket, (sockaddr*)&clientAddr, &clientSize);
+
+	if (clientSocket == INVALID_SOCKET)
+		return false;
+
 	return true;
 }
 
 char * CSocket::Recive()
 {
-	int clientSize = sizeof(clientAddr);
-	clientSocket = accept(serverSocket, (sockaddr*)&clientAddr, &clientSize);
-
-	if (clientSocket == INVALID_SOCKET)
-		return nullptr;
-
 	buffer[0] = '\0';
 	recv(clientSocket, buffer, sizeof(buffer), 0);
 

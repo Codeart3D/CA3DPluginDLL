@@ -97,6 +97,4 @@ void CA3DPlugin::StepSimulation()
 		SendData("Successful");
 	else
 		SendData("Failed!");
-
-	Socket.End();
 }
