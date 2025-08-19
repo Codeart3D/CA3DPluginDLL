@@ -25,3 +25,5 @@ Autonomous vehicle algorithm testing
 AI behavior simulation in virtual environments  
 Game control via external scripts or applications  
 Real-time monitoring and feedback loops  
+
+![Screenshot](CA3DPlugin.png)
