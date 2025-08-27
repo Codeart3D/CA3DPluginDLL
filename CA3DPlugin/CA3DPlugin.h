@@ -25,7 +25,7 @@ public:
 	void AddCommand(COMMAND cmd);
 
 	void SendData(const char* data);
-	bool ParsCommand();
+	char* ParsCommand();
 	void StepSimulation();
 
 private:

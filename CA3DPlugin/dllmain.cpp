@@ -37,18 +37,19 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	return TRUE;
 }
 
-typedef void(*CallbackFunctionVoid)();
-typedef void(*CallbackFunctionInt)(int);
-typedef void(*CallbackFunctionIntInt)(int, int);
-typedef void(*CallbackFunctionIntIntFloat)(int, int, float *);
-typedef void(*CallbackFunctionIntIntIntFloat)(int, int, int &, float *);
+typedef void(*CallbackFunctionVoid)(void(*)());
+typedef void(*CallbackFunctionInt)(void(*)(int));
+typedef void(*CallbackFunctionIntInt)(void(*)(int, int));
+typedef void(*CallbackFunctionIntIntFloat)(void(*)(int, int, float *));
+typedef void(*CallbackFunctionIntIntIntFloat)(void(*)(int, int, int &, float **));
+typedef void(*CallbackFunctionIntIntFloatFloat)(void(*)(int, int, float *, float *));
+typedef void(*CallbackFunctionIntIntIntFloatFloat)(void(*)(int, int, int&, float *, float **));
+typedef void(*CallbackFunctionIntIntIntInt)(void(*)(int, int, int&, int&));
 
 extern "C"
 {
 #pragma region Level
 
-	CallbackFunctionInt Level_Reset = NULL;
-	EXP void SetLevel_Reset_Callback(CallbackFunctionInt f) { Level_Reset = f; }
 	CallbackFunctionInt Level_Reload = NULL;
 	EXP void SetLevel_Reload_Callback(CallbackFunctionInt f) { Level_Reload = f; }
 
@@ -58,6 +59,12 @@ extern "C"
 
 	CallbackFunctionIntIntIntFloat Spline_GetPoints = NULL;
 	EXP void SetSpline_GetPoints_Callback(CallbackFunctionIntIntIntFloat f) { Spline_GetPoints = f; }
+	CallbackFunctionIntIntIntFloatFloat Spline_GetNearestPoints = NULL;
+	EXP void SetSpline_GetNearestPoints_Callback(CallbackFunctionIntIntIntFloatFloat f) { Spline_GetNearestPoints = f; }
+	CallbackFunctionIntIntFloat Spline_GetWidth = NULL;
+	EXP void SetSpline_GetWidth_Callback(CallbackFunctionIntIntFloat f) { Spline_GetWidth = f; }
+	CallbackFunctionIntIntFloatFloat Spline_GetWayPercent = NULL;
+	EXP void SetSpline_GetWayPercent_Callback(CallbackFunctionIntIntFloatFloat f) { Spline_GetWayPercent = f; }
 
 #pragma endregion
 
@@ -65,6 +72,10 @@ extern "C"
 
 	CallbackFunctionIntIntFloat Vehicle_GetPosition = NULL;
 	EXP void SetVehicle_GetPosition_Callback(CallbackFunctionIntIntFloat f) { Vehicle_GetPosition = f; }
+	CallbackFunctionIntIntFloat Vehicle_GetForwardVector = NULL;
+	EXP void SetVehicle_GetForwardVector_Callback(CallbackFunctionIntIntFloat f) { Vehicle_GetForwardVector = f; }
+	CallbackFunctionIntIntIntInt Vehicle_HasCollided = NULL;
+	EXP void SetVehicle_HasCollided_Callback(CallbackFunctionIntIntIntInt f) { Vehicle_HasCollided = f; }
 	CallbackFunctionIntInt Vehicle_Forward = NULL;
 	EXP void SetVehicle_Forward_Callback(CallbackFunctionIntInt f) { Vehicle_Forward = f; }
 	CallbackFunctionIntInt Vehicle_Backward = NULL;
@@ -84,13 +95,55 @@ extern "C"
 
 #pragma endregion
 
+#pragma region Timer2D
+
+	CallbackFunctionIntInt Timer2D_Reset = NULL;
+	EXP void SetTimer2D_Reset_Callback(CallbackFunctionIntInt f) { Timer2D_Reset = f; }
+	CallbackFunctionIntIntFloat Timer2D_GetTimerTime = NULL;
+	EXP void SetTimer2D_GetTimerTime_Callback(CallbackFunctionIntIntFloat f) { Timer2D_GetTimerTime = f; }
+
+#pragma endregion
+
 #pragma region Init
 	void AddCommands()
 	{
-		Plugin.AddCommand(COMMAND("Vehicle_Left", 2, Vehicle_Left));
-		Plugin.AddCommand(COMMAND("Vehicle_Right", 2, Vehicle_Right));
-		Plugin.AddCommand(COMMAND("Vehicle_Forward", 2, Vehicle_Forward));
-		Plugin.AddCommand(COMMAND("Vehicle_Backward", 2, Vehicle_Backward));
+		//
+		// Level
+		//
+		int startcode = (int)AssetType::Level;
+		Plugin.AddCommand(COMMAND(++startcode, "Level_Reload", Level_Reload)); // 70001
+
+		//
+		// Spline
+		//
+		startcode = (int)AssetType::Spline;
+		Plugin.AddCommand(COMMAND(++startcode, "Spline_GetPoints", Spline_GetPoints)); // 62601
+		Plugin.AddCommand(COMMAND(++startcode, "Spline_GetNearestPoints", Spline_GetNearestPoints)); // 62602
+		Plugin.AddCommand(COMMAND(++startcode, "Spline_GetWidth", Spline_GetWidth)); // 62603
+		Plugin.AddCommand(COMMAND(++startcode, "Spline_GetWayPercent", Spline_GetWayPercent)); // 62604
+
+		//
+		// Vehicle
+		//
+		startcode = (int)AssetType::WheeledVehicle;
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_GetPosition", Vehicle_GetPosition)); // 61801
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_GetForwardVector", Vehicle_GetForwardVector)); // 61802
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_HasCollided", Vehicle_HasCollided)); // 61803
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Forward", Vehicle_Forward)); // 61804
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Backward", Vehicle_Backward)); // 61805
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Left", Vehicle_Left)); // 61806
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Right", Vehicle_Right)); // 61807
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ReleaseForwadBackward", Vehicle_ReleaseForwadBackward)); // 61808
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ReleaseLeftRight", Vehicle_ReleaseLeftRight)); // 61809
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Handbrake", Vehicle_Handbrake)); // 61810
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ReleaseHandbrake", Vehicle_ReleaseHandbrake)); // 61811
+
+		//
+		// Timer2D
+		//
+		startcode = (int)AssetType::Timer2D;
+		Plugin.AddCommand(COMMAND(++startcode, "Timer2D_Reset", Timer2D_Reset)); // 41001
+		Plugin.AddCommand(COMMAND(++startcode, "Timer2D_GetTimerTime", Timer2D_GetTimerTime)); // 41002
 	}
 
 	EXP void Plugin_Init()
@@ -99,9 +152,9 @@ extern "C"
 	}
 #pragma endregion
 
-#pragma region Simulation
+#pragma region Init
 
-	EXP void StepSimulation(float delta_time)
+	EXP void Init()
 	{
 		static bool init = false;
 

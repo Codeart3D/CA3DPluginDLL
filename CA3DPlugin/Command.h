@@ -13,20 +13,31 @@
 
 #include <iostream>
 
+#define MAX_BUFFER 2048
 #define MAX_COMMAND 100
+
+enum AssetType
+{
+	Timer2D = 41000,
+	Screen = 50000,
+	SoundBox = 60100,
+	WheeledVehicle = 61800,
+	Spline = 62600,
+	Level = 70000
+};
 
 struct COMMAND
 {
 	char Name[64];
-	int ParameterCount;
+	int Code;
 	void* Function;
 
 	COMMAND() {}
 
-	COMMAND(const char* name, int pc, void* func)
+	COMMAND(int code, const char* name, void* func)
 	{
+		Code = code;
 		strcpy_s(Name, 64, name);
-		ParameterCount = pc;
 		Function = func;
 	}
 };
@@ -38,10 +49,14 @@ public:
 	~CCommand();
 
 	void AddCommand(COMMAND cmd);
-	bool RunCommand(char** cmd);
+	char* RunCommand(char** cmd);
+	char* CallFunction(COMMAND& cmd, char** params);
 
 private:
 	int CommandCount;
+
+	char success[11];
+	char response[MAX_BUFFER];
 
 	COMMAND Command[MAX_COMMAND];
 };

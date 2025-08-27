@@ -54,13 +54,13 @@ void CA3DPlugin::SendData(const char* data)
 	Socket.Send(data);
 }
 
-bool CA3DPlugin::ParsCommand()
+char* CA3DPlugin::ParsCommand()
 {
 	// Wait for recive command
 	char* command = Socket.Recive();
 
-	if (!command)
-		return false;
+	if (!command[0])
+		return NULL;
 
 	// Pars command
 	int i = 0;
@@ -77,10 +77,7 @@ bool CA3DPlugin::ParsCommand()
 			if (i > 0)
 			{
 				command[i] = '\0';
-				Part[counter] = &command[j];
-
-				j = i + 1;
-				counter++;
+				Part[++counter] = &command[i + 1];
 			}
 		}
 
@@ -93,8 +90,10 @@ bool CA3DPlugin::ParsCommand()
 
 void CA3DPlugin::StepSimulation()
 {
-	if (ParsCommand())
-		SendData("Successful");
+	char* response = ParsCommand();
+
+	if (response)
+		SendData(response);
 	else
 		SendData("Failed!");
 }
