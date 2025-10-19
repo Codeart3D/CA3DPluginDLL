@@ -34,32 +34,34 @@ int main()
 	//
 	//------------------------------ COMMANDS -------------------------
 	//
-	const char* command1 = "70001,0"; // Level_Reload																					[TEST OK]
+	const char* command1 = "70001,0"; // Level_Reload																						[TEST OK]
 
-	const char* command2 = "61804,0,0"; // Vehicle_Forward																				[TEST OK]
-	const char* command3 = "61805,0,0"; // Vehicle_Backward																				[TEST OK]
-	const char* command4 = "61806,0,0"; // Vehicle_Left																					[TEST OK]
-	const char* command5 = "61807,0,0"; // Vehicle_Right																				[TEST OK]
+	const char* command2 = "61804,0,0"; // Vehicle_Forward																					[TEST OK]
+	const char* command3 = "61805,0,0"; // Vehicle_Backward																					[TEST OK]
+	const char* command4 = "61806,0,0"; // Vehicle_Left																						[TEST OK]
+	const char* command5 = "61807,0,0"; // Vehicle_Right																					[TEST OK]
 	const char* command6 = "61808,0,0"; // Vehicle_ReleaseForwadBackward
 	const char* command7 = "61809,0,0"; // Vehicle_ReleaseLeftRight
-	const char* command8 = "61810,0,0"; // Vehicle_Handbrake																			[TEST OK]
+	const char* command8 = "61810,0,0"; // Vehicle_Handbrake																				[TEST OK]
 	const char* command9 = "61811,0,0"; // Vehicle_ReleaseHandbrake
-	const char* command10 = "41001,2,0"; // Timer2D_Reset																				[TEST OK]
+	const char* command10 = "41001,2,0"; // Timer2D_Reset																					[TEST OK]
 
-	const char* command11 = "62601,0,0"; // Spline_GetPoints : all points																[TEST OK]
-	const char* command12 = "62602,0,0,4,0.0,92.0,0.0"; // Spline_GetNearestPoints : max points 4, (0.0,92.0,0.0) vehicle position		[TEST OK]
+	const char* command11 = "62601,0,0"; // Spline_GetPoints : all points																	[TEST OK]
+	const char* command12 = "62602,0,0,4,0.0,92.0,0.0"; // Spline_GetNearestPoints : max points 4, (0.0,92.0,0.0) vehicle position			[TEST OK]
 
-	const char* command13 = "62603,0,0"; // Spline_GetWidth																				[TEST OK]
-	const char* command14 = "62604,0,0,60.0,92.0,0.0"; // Spline_GetWayPercent : (60.0,92.0,0.0) vehicle position						[TEST OK]
-	const char* command15 = "41002,2,0"; // Timer2D_GetTimerTime : game_screen index is 2 and timer2d index is 0						[TEST OK]
+	const char* command13 = "62603,0,0"; // Spline_GetWidth																					[TEST OK]
+	const char* command14 = "62604,0,0,60.0,92.0,0.0"; // Spline_GetWayPercent : (60.0,92.0,0.0) vehicle position							[TEST OK]
+	const char* command15 = "41002,2,0"; // Timer2D_GetTimerTime : game_screen index is 2 and timer2d index is 0							[TEST OK]
 
-	const char* command16 = "61801,0,0"; // Vehicle_GetPosition																			[TEST OK]
-	const char* command17 = "61802,0,0"; // Vehicle_GetForwardVector																	[TEST OK]
+	const char* command16 = "61801,0,0"; // Vehicle_GetPosition																				[TEST OK]
+	const char* command17 = "61802,0,0"; // Vehicle_GetForwardVector																		[TEST OK]
 
-	const char* command18 = "61803,0,0,1,2"; // Vehicle_HasCollided, 1 tag id for rivals and 2 for walls, return 0 or 1					[TEST OK]
+	const char* command18 = "61803,0,0,1,2"; // Vehicle_HasCollided, 1 tag id for rivals and 2 for walls, return 0 or 1						[TEST OK]
+
+	const char* command19 = "11101,0.0,103.0,0.7,1.0,0.0,0.0,50.0"; // origin(0.0,0.0,0.0), normal direction(1.0,0.0,0.0), distance 50.0	[TEST OK]
 
 
-	const char* command = command15;
+	const char* command = command19;
 	//
 	//-----------------------------------------------------------------
 	//

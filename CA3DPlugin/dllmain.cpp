@@ -45,6 +45,7 @@ typedef void(*CallbackFunctionIntIntIntFloat)(void(*)(int, int, int &, float **)
 typedef void(*CallbackFunctionIntIntFloatFloat)(void(*)(int, int, float *, float *));
 typedef void(*CallbackFunctionIntIntIntFloatFloat)(void(*)(int, int, int&, float *, float **));
 typedef void(*CallbackFunctionIntIntIntInt)(void(*)(int, int, int&, int&));
+typedef void(*CallbackFunctionVecVecVecFloatBool)(void(*)(float*, float*, float*, float, bool&));
 
 extern "C"
 {
@@ -104,6 +105,14 @@ extern "C"
 
 #pragma endregion
 
+#pragma region Math
+
+	CallbackFunctionVecVecVecFloatBool Ray_Test = NULL;
+	EXP void SetRay_Test_Callback(CallbackFunctionVecVecVecFloatBool f) { Ray_Test = f; }
+
+#pragma endregion
+
+
 #pragma region Init
 	void AddCommands()
 	{
@@ -144,6 +153,12 @@ extern "C"
 		startcode = (int)AssetType::Timer2D;
 		Plugin.AddCommand(COMMAND(++startcode, "Timer2D_Reset", Timer2D_Reset)); // 41001
 		Plugin.AddCommand(COMMAND(++startcode, "Timer2D_GetTimerTime", Timer2D_GetTimerTime)); // 41002
+																							   
+		//
+		// Math
+		//
+		startcode = (int)AssetType::Math;
+		Plugin.AddCommand(COMMAND(++startcode, "Ray_Test", Ray_Test)); // 11101
 	}
 
 	EXP void Plugin_Init()

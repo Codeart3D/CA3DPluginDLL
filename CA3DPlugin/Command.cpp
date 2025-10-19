@@ -21,6 +21,7 @@ typedef void(*CallbackFunctionIntIntIntFloat)(int, int, int &, float **);
 typedef void(*CallbackFunctionIntIntFloatFloat)(int, int, float *, float *);
 typedef void(*CallbackFunctionIntIntIntFloatFloat)(int, int, int&, float *, float **);
 typedef void(*CallbackFunctionIntIntIntInt)(int, int, int&, int&);
+typedef void(*CallbackFunctionVecVecVecFloatBool)(float*, float*, float*, float, bool&);
 
 CCommand::CCommand()
 {
@@ -80,7 +81,7 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		((CallbackFunctionIntIntIntFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), count, &result);
 		sprintf_s(response, MAX_BUFFER, "%d", count);
 		int ncount = count * 3;
-		
+
 		for (int i = 0; i < ncount; i += 3)
 		{
 			sprintf_s(posstr, 64, ",%.3f,%.3f,%.3f", result[i], result[i + 1], result[i + 2]);
@@ -96,9 +97,9 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		float pos[3];
 		char posstr[64];
 		float* result = NULL;
-		pos[0] = atoi(params[4]);
-		pos[1] = atoi(params[5]);
-		pos[2] = atoi(params[6]);
+		pos[0] = (float)atof(params[4]);
+		pos[1] = (float)atof(params[5]);
+		pos[2] = (float)atof(params[6]);
 		((CallbackFunctionIntIntIntFloatFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), max, pos, &result);
 		sprintf_s(response, MAX_BUFFER, "%d", max);
 		int ncount = max * 3;
@@ -125,9 +126,9 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 	{
 		float result = 0.0f;
 		float pos[3];
-		pos[0] = atoi(params[3]);
-		pos[1] = atoi(params[4]);
-		pos[2] = atoi(params[5]);
+		pos[0] = (float)atof(params[3]);
+		pos[1] = (float)atof(params[4]);
+		pos[2] = (float)atof(params[5]);
 		((CallbackFunctionIntIntFloatFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), pos, &result);
 		sprintf_s(response, MAX_BUFFER, "%.3f", result);
 		return response;
@@ -148,6 +149,29 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		int result2 = atoi(params[4]);
 		((CallbackFunctionIntIntIntInt)cmd.Function)(atoi(params[1]), atoi(params[2]), result1, result2);
 		sprintf_s(response, MAX_BUFFER, "%d,%d", result1, result2);
+		return response;
+	}
+	case 11101: // Ray_test
+	{
+		float org[3];
+		org[0] = (float)atof(params[1]);
+		org[1] = (float)atof(params[2]);
+		org[2] = (float)atof(params[3]);
+
+		float nor[3];
+		nor[0] = (float)atof(params[4]);
+		nor[1] = (float)atof(params[5]);
+		nor[2] = (float)atof(params[6]);
+
+		float hit[3];
+		hit[0] = 0.0f;
+		hit[1] = 0.0f;
+		hit[2] = 0.0f;
+
+		bool result = false;
+
+		((CallbackFunctionVecVecVecFloatBool)cmd.Function)(org, nor, hit, (float)atof(params[7]), result);
+		sprintf_s(response, MAX_BUFFER, "%d,%.3f,%.3f,%.3f", (int)result, hit[0], hit[1], hit[2]);
 		return response;
 	}
 	}

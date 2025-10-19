@@ -23,7 +23,8 @@ enum AssetType
 	SoundBox = 60100,
 	WheeledVehicle = 61800,
 	Spline = 62600,
-	Level = 70000
+	Level = 70000,
+	Math = 11100,
 };
 
 struct COMMAND
