@@ -45,7 +45,7 @@ typedef void(*CallbackFunctionIntIntIntFloat)(void(*)(int, int, int &, float **)
 typedef void(*CallbackFunctionIntIntFloatFloat)(void(*)(int, int, float *, float *));
 typedef void(*CallbackFunctionIntIntIntFloatFloat)(void(*)(int, int, int&, float *, float **));
 typedef void(*CallbackFunctionIntIntIntInt)(void(*)(int, int, int&, int&));
-typedef void(*CallbackFunctionVecVecVecFloatBool)(void(*)(float*, float*, float*, float, bool&));
+typedef void(*CallbackFunctionVecVecVecFloatIntBool)(void(*)(float*, float*, float*, float, int&, bool&));
 
 extern "C"
 {
@@ -107,8 +107,8 @@ extern "C"
 
 #pragma region Math
 
-	CallbackFunctionVecVecVecFloatBool Ray_Test = NULL;
-	EXP void SetRay_Test_Callback(CallbackFunctionVecVecVecFloatBool f) { Ray_Test = f; }
+	CallbackFunctionVecVecVecFloatIntBool Ray_Test = NULL;
+	EXP void SetRay_Test_Callback(CallbackFunctionVecVecVecFloatIntBool f) { Ray_Test = f; }
 
 #pragma endregion
 

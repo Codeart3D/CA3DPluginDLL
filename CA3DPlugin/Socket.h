@@ -13,6 +13,8 @@
 
 #include <winsock2.h>
 
+#define MAX_BUFFER 2048
+
 class CSocket
 {
 public:
@@ -27,7 +29,7 @@ public:
 	void Send(const char* message);
 	
 public:
-	char buffer[1024];
+	char buffer[MAX_BUFFER];
 
 private:
 	SOCKET clientSocket;

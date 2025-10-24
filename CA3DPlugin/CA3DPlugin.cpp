@@ -13,7 +13,7 @@
 #include "CA3DPlugin.h"
 #include <thread>
 
-#define MAX_PART 10
+#define MAX_PART 50
 
 void SecondThread(CA3DPlugin* plugin)
 {

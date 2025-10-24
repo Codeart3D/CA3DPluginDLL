@@ -61,7 +61,7 @@ bool CSocket::CheckConnection()
 
 char * CSocket::Recive()
 {
-	buffer[0] = '\0';
+	ZeroMemory(buffer, sizeof(buffer));
 	recv(clientSocket, buffer, sizeof(buffer), 0);
 
 	return &buffer[0];

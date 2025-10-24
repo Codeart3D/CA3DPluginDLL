@@ -21,7 +21,7 @@ typedef void(*CallbackFunctionIntIntIntFloat)(int, int, int &, float **);
 typedef void(*CallbackFunctionIntIntFloatFloat)(int, int, float *, float *);
 typedef void(*CallbackFunctionIntIntIntFloatFloat)(int, int, int&, float *, float **);
 typedef void(*CallbackFunctionIntIntIntInt)(int, int, int&, int&);
-typedef void(*CallbackFunctionVecVecVecFloatBool)(float*, float*, float*, float, bool&);
+typedef void(*CallbackFunctionVecVecVecFloatIntBool)(float*, float*, float*, float, int&, bool&);
 
 CCommand::CCommand()
 {
@@ -97,9 +97,9 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		float pos[3];
 		char posstr[64];
 		float* result = NULL;
-		pos[0] = (float)atof(params[4]);
-		pos[1] = (float)atof(params[5]);
-		pos[2] = (float)atof(params[6]);
+		pos[0] = (float)std::atof(params[4]);
+		pos[1] = (float)std::atof(params[5]);
+		pos[2] = (float)std::atof(params[6]);
 		((CallbackFunctionIntIntIntFloatFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), max, pos, &result);
 		sprintf_s(response, MAX_BUFFER, "%d", max);
 		int ncount = max * 3;
@@ -126,9 +126,9 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 	{
 		float result = 0.0f;
 		float pos[3];
-		pos[0] = (float)atof(params[3]);
-		pos[1] = (float)atof(params[4]);
-		pos[2] = (float)atof(params[5]);
+		pos[0] = (float)std::atof(params[3]);
+		pos[1] = (float)std::atof(params[4]);
+		pos[2] = (float)std::atof(params[5]);
 		((CallbackFunctionIntIntFloatFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), pos, &result);
 		sprintf_s(response, MAX_BUFFER, "%.3f", result);
 		return response;
@@ -137,7 +137,7 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 	case 61801: // Vehicle_GetPosition
 	case 61802: // Vehicle_GetForwardVector
 	{
-		float result[3] = { 0.0f, 0.0f, 0.0f };
+		float result[3] = { 111.0f, 0.0f, 0.0f };
 		((CallbackFunctionIntIntFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), result);
 		sprintf_s(response, MAX_BUFFER, "%.3f,%.3f,%.3f", result[0], result[1], result[2]);
 		return response;
@@ -154,24 +154,21 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 	case 11101: // Ray_test
 	{
 		float org[3];
-		org[0] = (float)atof(params[1]);
-		org[1] = (float)atof(params[2]);
-		org[2] = (float)atof(params[3]);
+		org[0] = (float)std::atof(params[1]);
+		org[1] = (float)std::atof(params[2]);
+		org[2] = (float)std::atof(params[3]);
 
 		float nor[3];
-		nor[0] = (float)atof(params[4]);
-		nor[1] = (float)atof(params[5]);
-		nor[2] = (float)atof(params[6]);
+		nor[0] = (float)std::atof(params[4]);
+		nor[1] = (float)std::atof(params[5]);
+		nor[2] = (float)std::atof(params[6]);
 
-		float hit[3];
-		hit[0] = 0.0f;
-		hit[1] = 0.0f;
-		hit[2] = 0.0f;
-
+		float hit[3]{ 0.0f, 0.0f, 0.0f };
 		bool result = false;
+		int groupid = 0;
 
-		((CallbackFunctionVecVecVecFloatBool)cmd.Function)(org, nor, hit, (float)atof(params[7]), result);
-		sprintf_s(response, MAX_BUFFER, "%d,%.3f,%.3f,%.3f", (int)result, hit[0], hit[1], hit[2]);
+		((CallbackFunctionVecVecVecFloatIntBool)cmd.Function)(org, nor, hit, (float)std::atof(params[7]), groupid, result);
+		sprintf_s(response, MAX_BUFFER, "%d,%d,%.3f,%.3f,%.3f", (int)result, groupid, hit[0], hit[1], hit[2]);
 		return response;
 	}
 	}

@@ -14,7 +14,7 @@ int main()
 	WSADATA wsaData;
 	SOCKET sock;
 	sockaddr_in serverAddr;
-	char buffer[1024] = { 0 };
+	char buffer[2048] = { 0 };
 
 	WSAStartup(MAKEWORD(2, 2), &wsaData);
 
@@ -58,28 +58,28 @@ int main()
 
 	const char* command18 = "61803,0,0,1,2"; // Vehicle_HasCollided, 1 tag id for rivals and 2 for walls, return 0 or 1						[TEST OK]
 
-	const char* command19 = "11101,0.0,103.0,0.7,1.0,0.0,0.0,50.0"; // origin(0.0,0.0,0.0), normal direction(1.0,0.0,0.0), distance 50.0	[TEST OK]
+	const char* command19 = "11101,5.93,92.37,0.93,1.0,0.0,0.0,50.0"; // origin(0.0,0.0,0.0), normal direction(1.0,0.0,0.0), distance 50.0	[TEST OK]
 
 
-	const char* command = command19;
+	const char* sndcmd1 = command19;
+	const char* sndcmd2 = command16;
 	//
 	//-----------------------------------------------------------------
 	//
 
-	/*send(sock, command1, strlen(command1), 0);
-	recv(sock, buffer, sizeof(buffer), 0);
-
-	send(sock, command10, strlen(command10), 0);
-	recv(sock, buffer, sizeof(buffer), 0);*/
-
 	while (response)
 	{
-		send(sock, command, strlen(command), 0);
-		std::cout << "Message sent to server\n";
-
+		// command 1
 		ZeroMemory(buffer, sizeof(buffer));
+		send(sock, sndcmd1, strlen(sndcmd1), 0);
 		recv(sock, buffer, sizeof(buffer), 0);
-		std::cout << "Received from server: " << buffer << std::endl;
+		std::cout << "Response Command 1 : " << buffer << std::endl;
+
+		// command 2
+		ZeroMemory(buffer, sizeof(buffer));
+		send(sock, sndcmd2, strlen(sndcmd2), 0);
+		recv(sock, buffer, sizeof(buffer), 0);
+		std::cout << "Response Command 2 : " << buffer << std::endl;
 	}
 
 	closesocket(sock);
