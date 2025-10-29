@@ -43,6 +43,7 @@ typedef void(*CallbackFunctionIntInt)(void(*)(int, int));
 typedef void(*CallbackFunctionIntIntFloat)(void(*)(int, int, float *));
 typedef void(*CallbackFunctionIntIntIntFloat)(void(*)(int, int, int &, float **));
 typedef void(*CallbackFunctionIntIntFloatFloat)(void(*)(int, int, float *, float *));
+typedef void(*CallbackFunctionIntIntFloatVFloatV)(void(*)(int, int, float &, float &));
 typedef void(*CallbackFunctionIntIntIntFloatFloat)(void(*)(int, int, int&, float *, float **));
 typedef void(*CallbackFunctionIntIntIntInt)(void(*)(int, int, int&, int&));
 typedef void(*CallbackFunctionVecVecVecFloatIntBool)(void(*)(float*, float*, float*, float, int&, bool&));
@@ -93,6 +94,8 @@ extern "C"
 	EXP void SetVehicle_Handbrake_Callback(CallbackFunctionIntInt f) { Vehicle_Handbrake = f; }
 	CallbackFunctionIntInt Vehicle_ReleaseHandbrake = NULL;
 	EXP void SetVehicle_ReleaseHandbrake_Callback(CallbackFunctionIntInt f) { Vehicle_ReleaseHandbrake = f; }
+	CallbackFunctionIntIntFloatVFloatV Vehicle_GetSpeed = NULL;
+	EXP void SetVehicle_GetSpeed_Callback(CallbackFunctionIntIntFloatVFloatV f) { Vehicle_GetSpeed = f; }
 
 #pragma endregion
 
@@ -146,6 +149,7 @@ extern "C"
 		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ReleaseLeftRight", Vehicle_ReleaseLeftRight)); // 61809
 		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Handbrake", Vehicle_Handbrake)); // 61810
 		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ReleaseHandbrake", Vehicle_ReleaseHandbrake)); // 61811
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_GetSpeed", Vehicle_GetSpeed)); // 61812
 
 		//
 		// Timer2D

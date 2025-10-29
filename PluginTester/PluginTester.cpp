@@ -59,9 +59,10 @@ int main()
 	const char* command18 = "61803,0,0,1,2"; // Vehicle_HasCollided, 1 tag id for rivals and 2 for walls, return 0 or 1						[TEST OK]
 
 	const char* command19 = "11101,5.93,92.37,0.93,1.0,0.0,0.0,50.0"; // origin(0.0,0.0,0.0), normal direction(1.0,0.0,0.0), distance 50.0	[TEST OK]
+	const char* command20 = "61812,0,0"; // Vehicle_GetSpeed																				[TEST OK]
 
 
-	const char* sndcmd1 = command19;
+	const char* sndcmd1 = command20;
 	const char* sndcmd2 = command16;
 	//
 	//-----------------------------------------------------------------
@@ -76,10 +77,10 @@ int main()
 		std::cout << "Response Command 1 : " << buffer << std::endl;
 
 		// command 2
-		ZeroMemory(buffer, sizeof(buffer));
+		/*ZeroMemory(buffer, sizeof(buffer));
 		send(sock, sndcmd2, strlen(sndcmd2), 0);
 		recv(sock, buffer, sizeof(buffer), 0);
-		std::cout << "Response Command 2 : " << buffer << std::endl;
+		std::cout << "Response Command 2 : " << buffer << std::endl;*/
 	}
 
 	closesocket(sock);

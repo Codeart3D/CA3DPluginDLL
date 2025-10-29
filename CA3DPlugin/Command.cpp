@@ -19,6 +19,7 @@ typedef void(*CallbackFunctionIntInt)(int, int);
 typedef void(*CallbackFunctionIntIntFloat)(int, int, float *);
 typedef void(*CallbackFunctionIntIntIntFloat)(int, int, int &, float **);
 typedef void(*CallbackFunctionIntIntFloatFloat)(int, int, float *, float *);
+typedef void(*CallbackFunctionIntIntFloatVFloatV)(int, int, float &, float &);
 typedef void(*CallbackFunctionIntIntIntFloatFloat)(int, int, int&, float *, float **);
 typedef void(*CallbackFunctionIntIntIntInt)(int, int, int&, int&);
 typedef void(*CallbackFunctionVecVecVecFloatIntBool)(float*, float*, float*, float, int&, bool&);
@@ -110,6 +111,14 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 			strcat_s(response, MAX_BUFFER, posstr);
 		}
 
+		return response;
+	}
+	case 61812:
+	{
+		float max = 0.0f;
+		float speed = 0.0f;
+		((CallbackFunctionIntIntFloatVFloatV)cmd.Function)(atoi(params[1]), atoi(params[2]), max, speed);
+		sprintf_s(response, MAX_BUFFER, "%.3f,%.3f", max, speed);
 		return response;
 	}
 
