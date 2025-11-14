@@ -20,6 +20,7 @@
 CSocket::CSocket()
 {
 	buffer[0] = '\0';
+	connected = false;
 }
 
 CSocket::~CSocket()
@@ -47,6 +48,10 @@ bool CSocket::CheckConnection()
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = INADDR_ANY;
 	serverAddr.sin_port = htons(PORT);
+
+	const char opt = 1;
+	setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
 	bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr));
 	listen(serverSocket, 1);
 
@@ -56,13 +61,33 @@ bool CSocket::CheckConnection()
 	if (clientSocket == INVALID_SOCKET)
 		return false;
 
+	connected = true;
+
 	return true;
 }
 
 char * CSocket::Recive()
 {
 	ZeroMemory(buffer, sizeof(buffer));
-	recv(clientSocket, buffer, sizeof(buffer), 0);
+	int result = recv(clientSocket, buffer, sizeof(buffer), 0);
+
+	if (result == 0)
+	{
+		// Connection closed by peer
+		connected = false;
+		CloseConnection();
+		CheckConnection();
+	}
+	else if (result < 0)
+	{
+		if (errno != EAGAIN && errno != EWOULDBLOCK)
+		{
+			// Error occurred, connection likely broken
+			connected = false;
+			CloseConnection();
+			CheckConnection();
+		}
+	}
 
 	return &buffer[0];
 }
@@ -70,4 +95,9 @@ char * CSocket::Recive()
 void CSocket::Send(const char * message)
 {
 	send(clientSocket, message, strlen(message), 0);
+}
+
+bool CSocket::IsConnected()
+{
+	return connected;
 }

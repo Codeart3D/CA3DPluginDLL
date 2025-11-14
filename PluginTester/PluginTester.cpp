@@ -23,10 +23,17 @@ int main()
 	serverAddr.sin_port = htons(PORT);
 	serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-	if (connect(sock, (sockaddr*)&serverAddr, sizeof(serverAddr)) != 0)
+	while (true)
 	{
-		std::cerr << "Connection failed\n";
-		return 1;
+		int res = connect(sock, (sockaddr*)&serverAddr, sizeof(serverAddr));
+
+		if (res != 0)
+		{
+			std::cerr << "Connection failed\n";
+			Sleep(500);
+		}
+		else
+			break;
 	}
 
 	int response = 1;

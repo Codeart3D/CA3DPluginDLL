@@ -27,11 +27,14 @@ public:
 	bool CheckConnection();
 	char* Recive();
 	void Send(const char* message);
+	bool IsConnected();
 	
 public:
 	char buffer[MAX_BUFFER];
 
 private:
+	bool connected;
+
 	SOCKET clientSocket;
 	SOCKET serverSocket;
 
