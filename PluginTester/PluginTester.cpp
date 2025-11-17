@@ -69,7 +69,7 @@ int main()
 	const char* command20 = "61812,0,0"; // Vehicle_GetSpeed																				[TEST OK]
 
 
-	const char* sndcmd1 = command20;
+	const char* sndcmd1 = command19;
 	const char* sndcmd2 = command16;
 	//
 	//-----------------------------------------------------------------

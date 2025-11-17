@@ -49,9 +49,6 @@ bool CSocket::CheckConnection()
 	serverAddr.sin_addr.s_addr = INADDR_ANY;
 	serverAddr.sin_port = htons(PORT);
 
-	const char opt = 1;
-	setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
 	bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr));
 	listen(serverSocket, 1);
 
