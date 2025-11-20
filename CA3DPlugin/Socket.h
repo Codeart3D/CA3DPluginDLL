@@ -12,6 +12,7 @@
 #pragma once
 
 #include <winsock2.h>
+#include <ws2tcpip.h>
 
 #define MAX_BUFFER 2048
 

@@ -59,7 +59,7 @@ char* CA3DPlugin::ParsCommand()
 	// Wait for recive command
 	char* command = Socket.Recive();
 
-	if (!command[0])
+	if (!command)
 		return NULL;
 
 	// Pars command

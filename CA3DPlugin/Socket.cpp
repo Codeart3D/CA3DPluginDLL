@@ -10,9 +10,11 @@
 //-------------------------------------------------------------------------------
 
 #include <iostream>
+#include <errno.h>
 
 #include "stdafx.h"
 #include "Socket.h"
+
 
 #define PORT 8080
 #pragma comment(lib, "ws2_32.lib")
@@ -21,6 +23,7 @@ CSocket::CSocket()
 {
 	buffer[0] = '\0';
 	connected = false;
+	WSAStartup(MAKEWORD(2, 2), &wsaData);
 }
 
 CSocket::~CSocket()
@@ -74,15 +77,21 @@ char * CSocket::Recive()
 		connected = false;
 		CloseConnection();
 		CheckConnection();
+
+		return nullptr;
 	}
 	else if (result < 0)
 	{
-		if (errno != EAGAIN && errno != EWOULDBLOCK)
+		int err = WSAGetLastError();
+
+		if (err != WSAEWOULDBLOCK)
 		{
 			// Error occurred, connection likely broken
 			connected = false;
 			CloseConnection();
 			CheckConnection();
+
+			return nullptr;
 		}
 	}
 
