@@ -18,6 +18,7 @@
 
 enum AssetType
 {
+	Game = 10100,
 	Timer2D = 41000,
 	Screen = 50000,
 	SoundBox = 60100,

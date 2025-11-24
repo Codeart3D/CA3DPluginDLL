@@ -8,6 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 #define PORT 8080
+#define MAX_COMMAND 22
 
 int main()
 {
@@ -41,7 +42,8 @@ int main()
 	//
 	//------------------------------ COMMANDS -------------------------
 	//
-	const char* commands[20];
+	const char* commands[MAX_COMMAND];
+
 	commands[0] = "70001,0"; // Level_Reload																						[TEST OK]
 
 	commands[1] = "61804,0,0"; // Vehicle_Forward																					[TEST OK]
@@ -55,7 +57,7 @@ int main()
 	commands[9] = "41001,2,0"; // Timer2D_Reset																						[TEST OK]
 
 	commands[10] = "62601,0,0"; // Spline_GetPoints : all points																	[TEST OK]
-	commands[11] = "62602,0,0,4,0.0,92.0,0.0"; // Spline_GetNearestPoints : max points 4, (0.0,92.0,0.0) vehicle position			[TEST OK]
+	commands[11] = "62602,0,0,4,-72.47,90.08,1.0"; // Spline_GetNearestPoints : max points 4, (0.0,92.0,0.0) vehicle position			[TEST OK]
 
 	commands[12] = "62603,0,0"; // Spline_GetWidth																					[TEST OK]
 	commands[13] = "62604,0,0,60.0,92.0,0.0"; // Spline_GetWayPercent : (60.0,92.0,0.0) vehicle position							[TEST OK]
@@ -69,16 +71,19 @@ int main()
 	commands[18] = "11101,5.93,92.37,0.93,1.0,0.0,0.0,50.0"; // origin(0.0,0.0,0.0), normal direction(1.0,0.0,0.0), distance 50.0	[TEST OK]
 	commands[19] = "61812,0,0"; // Vehicle_GetSpeed																					[TEST OK]
 
+	commands[20] = "10101,0"; // Level_Play	(Pause)																					[TEST OK]
+	commands[21] = "10101,1"; // Level_Play	(Play)																					[TEST OK]
+
 	//
 	//-----------------------------------------------------------------
 	//
 
 	while (response)
 	{
-		int idx = rand() % 20;
+		int idx = rand() % MAX_COMMAND;
 
-		/*if (idx == 0)
-			idx = 1;*/
+		if (idx == 0)
+			idx = 1;
 
 		std::cout << "Response Command " << idx << " : ";
 		ZeroMemory(buffer, sizeof(buffer));

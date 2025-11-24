@@ -38,6 +38,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 }
 
 typedef void(*CallbackFunctionVoid)(void(*)());
+typedef void(*CallbackFunctionBool)(void(*)(bool));
 typedef void(*CallbackFunctionInt)(void(*)(int));
 typedef void(*CallbackFunctionIntInt)(void(*)(int, int));
 typedef void(*CallbackFunctionIntIntFloat)(void(*)(int, int, float *));
@@ -50,6 +51,13 @@ typedef void(*CallbackFunctionVecVecVecFloatIntBool)(void(*)(float*, float*, flo
 
 extern "C"
 {
+#pragma region Game
+
+	CallbackFunctionBool Game_Play = NULL;
+	EXP void SetGame_Play_Callback(CallbackFunctionBool f) { Game_Play = f; }
+
+#pragma endregion
+
 #pragma region Level
 
 	CallbackFunctionInt Level_Reload = NULL;
@@ -120,9 +128,15 @@ extern "C"
 	void AddCommands()
 	{
 		//
+		// Game
+		//
+		int startcode = (int)AssetType::Game;
+		Plugin.AddCommand(COMMAND(++startcode, "Game_Play", Game_Play)); // 10101
+
+		//
 		// Level
 		//
-		int startcode = (int)AssetType::Level;
+		startcode = (int)AssetType::Level;
 		Plugin.AddCommand(COMMAND(++startcode, "Level_Reload", Level_Reload)); // 70001
 
 		//

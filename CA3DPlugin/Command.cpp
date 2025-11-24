@@ -14,6 +14,7 @@
 #include <cstdlib>
 
 typedef void(*CallbackFunctionVoid)();
+typedef void(*CallbackFunctionBool)(bool);
 typedef void(*CallbackFunctionInt)(int);
 typedef void(*CallbackFunctionIntInt)(int, int);
 typedef void(*CallbackFunctionIntIntFloat)(int, int, float *);
@@ -57,6 +58,10 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 {
 	switch (cmd.Code)
 	{
+	case 10101: // Game_Play
+		((CallbackFunctionBool)cmd.Function)((bool)atoi(params[1]));
+		return success;
+
 	case 70001: // Level_Reload
 		((CallbackFunctionInt)cmd.Function)(atoi(params[1]));
 		return success;
