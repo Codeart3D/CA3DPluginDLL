@@ -148,6 +148,14 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		return response;
 	}
 
+	case 61814: // Vehicle_ForwardBackwardLeftRight
+	{
+		float v1 = (float)std::atof(params[3]);
+		float v2 = (float)std::atof(params[4]);
+		((CallbackFunctionIntIntFloatFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), &v1, &v2);
+		return success;
+	}
+
 	case 61801: // Vehicle_GetPosition
 	case 61802: // Vehicle_GetForwardVector
 	{
@@ -155,6 +163,13 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		((CallbackFunctionIntIntFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), result);
 		sprintf_s(response, MAX_BUFFER, "%.3f,%.3f,%.3f", result[0], result[1], result[2]);
 		return response;
+	}
+
+	case 61813: // Vehicle_SetPosition
+	{
+		float value[3] = { (float)std::atof(params[3]), (float)std::atof(params[4]), (float)std::atof(params[5]) };
+		((CallbackFunctionIntIntFloat)cmd.Function)(atoi(params[1]), atoi(params[2]), value);
+		return success;
 	}
 
 	case 61803: // Vehicle_HasCollided

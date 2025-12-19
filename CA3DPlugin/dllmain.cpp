@@ -104,6 +104,10 @@ extern "C"
 	EXP void SetVehicle_ReleaseHandbrake_Callback(CallbackFunctionIntInt f) { Vehicle_ReleaseHandbrake = f; }
 	CallbackFunctionIntIntFloatVFloatV Vehicle_GetSpeed = NULL;
 	EXP void SetVehicle_GetSpeed_Callback(CallbackFunctionIntIntFloatVFloatV f) { Vehicle_GetSpeed = f; }
+	CallbackFunctionIntIntFloat Vehicle_SetPosition = NULL;
+	EXP void SetVehicle_SetPosition_Callback(CallbackFunctionIntIntFloat f) { Vehicle_SetPosition = f; }
+	CallbackFunctionIntIntFloatFloat Vehicle_ForwardBackwardLeftRight = NULL;
+	EXP void SetVehicle_ForwardBackwardLeftRight_Callback(CallbackFunctionIntIntFloatFloat f) { Vehicle_ForwardBackwardLeftRight = f; }
 
 #pragma endregion
 
@@ -164,6 +168,8 @@ extern "C"
 		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_Handbrake", Vehicle_Handbrake)); // 61810
 		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ReleaseHandbrake", Vehicle_ReleaseHandbrake)); // 61811
 		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_GetSpeed", Vehicle_GetSpeed)); // 61812
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_SetPosition", Vehicle_SetPosition)); // 61813
+		Plugin.AddCommand(COMMAND(++startcode, "Vehicle_ForwardBackwardLeftRight", Vehicle_ForwardBackwardLeftRight)); // 61814
 
 		//
 		// Timer2D
