@@ -22,6 +22,7 @@ enum AssetType
 	Timer2D = 41000,
 	Screen = 50000,
 	SoundBox = 60100,
+	StaticMesh = 60700,
 	WheeledVehicle = 61800,
 	Spline = 62600,
 	Level = 70000,

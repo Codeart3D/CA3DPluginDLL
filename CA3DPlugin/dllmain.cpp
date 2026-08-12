@@ -127,6 +127,16 @@ extern "C"
 
 #pragma endregion
 
+#pragma region StaticMesh
+
+	CallbackFunctionIntIntFloat StaticMesh_GetPosition = NULL;
+	EXP void SetStaticMesh_GetPosition_Callback(CallbackFunctionIntIntFloat f) { StaticMesh_GetPosition = f; }
+	CallbackFunctionIntIntFloat StaticMesh_SetPosition = NULL;
+	EXP void SetStaticMesh_SetPosition_Callback(CallbackFunctionIntIntFloat f) { StaticMesh_SetPosition = f; }
+
+#pragma endregion
+
+
 
 #pragma region Init
 	void AddCommands()
@@ -183,6 +193,13 @@ extern "C"
 		//
 		startcode = (int)AssetType::Math;
 		Plugin.AddCommand(COMMAND(++startcode, "Ray_Test", Ray_Test)); // 11101
+
+		//
+		// StaticMesh
+		//
+		startcode = (int)AssetType::StaticMesh;
+		Plugin.AddCommand(COMMAND(++startcode, "StaticMesh_GetPosition", StaticMesh_GetPosition)); // 60701
+		Plugin.AddCommand(COMMAND(++startcode, "StaticMesh_SetPosition", StaticMesh_SetPosition)); // 60702
 	}
 
 	EXP void Plugin_Init()

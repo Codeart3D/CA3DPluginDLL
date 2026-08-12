@@ -8,7 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 #define PORT 8080
-#define MAX_COMMAND 24
+#define MAX_COMMAND 26
 
 int main()
 {
@@ -79,13 +79,15 @@ int main()
 	commands[22] = "61813,0,0,0.0,0.0,10.0"; // Vehicle_SetPosition																	[TEST OK]
 	commands[23] = "61814,0,0,1.0,0.5"; // Vehicle_ForwardBackwardLeftRight																					
 
+	commands[24] = "60701,0,1"; // StaticMesh_GetPosition																			[TEST OK]
+	commands[25] = "60702,0,2,0.0,0.2,20.0"; // StaticMesh_SetPosition																[TEST OK]
 	//
 	//-----------------------------------------------------------------
 	//
 
-	while (response)
+	//while (response)
 	{
-		int idx = 23;// rand() % (MAX_COMMAND - 2);
+		int idx = 25;// rand() % (MAX_COMMAND - 2);
 
 		/*if (idx == 0)
 			idx = 1;*/
@@ -95,7 +97,7 @@ int main()
 		send(sock, commands[idx], strlen(commands[idx]), 0);
 		recv(sock, buffer, sizeof(buffer), 0);
 		std::cout << buffer << std::endl;
-		//Sleep(1000);
+		Sleep(300);
 	}
 
 	closesocket(sock);

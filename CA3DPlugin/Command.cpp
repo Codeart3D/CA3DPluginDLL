@@ -156,6 +156,7 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		return success;
 	}
 
+	case 60701: // StaticMesh_GetPosition
 	case 61801: // Vehicle_GetPosition
 	case 61802: // Vehicle_GetForwardVector
 	{
@@ -165,6 +166,7 @@ char* CCommand::CallFunction(COMMAND & cmd, char ** params)
 		return response;
 	}
 
+	case 60702: // StaticMesh_SetPosition
 	case 61813: // Vehicle_SetPosition
 	{
 		float value[3] = { (float)std::atof(params[3]), (float)std::atof(params[4]), (float)std::atof(params[5]) };
